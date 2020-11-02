@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
+    <title>Like button</title>
+    <script
+      src="https://kit.fontawesome.com/71be7809e4.js"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <div class="container">
+      <div id="button" class="like_button">
+        <a href="#" class="link">
+          <i class="fas fa-thumbs-up icon thumbs"></i>
+          <span class="text">Like it</span>
+        </a>
+      </div>
+    </div>
+  </body>
+
+  <script>
+    let text = document.querySelector(".text");
+    let icon = document.querySelector(".icon");
+    let count = 1;
+
+    document.getElementById("button").addEventListener("click", handleClick);
+
+    function handleClick() {
+      updateCount();
+      changeIcon();
+    }
+
+    function updateCount() {
+      text.innerHTML = "Liked " + count++;
+    }
+
+    function changeIcon() {
+      icon.classList.remove("fa-thumbs-up");
+      icon.classList.add("fa-check");
+    }
+  </script>
+</html>
