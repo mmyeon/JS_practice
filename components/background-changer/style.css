@@ -1,0 +1,41 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Poppins", sans-serif;
+  min-height: 100vh;
+  margin: 0;
+  transition: all 1s ease 0s;
+}
+
+button {
+  background: rebeccapurple;
+  padding: 1rem;
+  /* font 적용 */
+  font-family: inherit;
+  font-size: 1.2rem;
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
+  border: none;
+  border-radius: 5px;
+  transition: transform 0.1s linear;
+}
+
+button:focus {
+  outline: none;
+}
+
+button:active {
+  box-shadow: 0 0;
+  transform: translate(2px, 2px);
+}
+
+button a {
+  color: white;
+  text-decoration: none;
+}
