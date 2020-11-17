@@ -4,8 +4,7 @@ const minsEl = document.getElementById("mins");
 const secondsEl = document.getElementById("seconds");
 
 // 카운트다운 할 날짜설정
-// const newYears = `1 Jan 2021`;
-const newYears = `25 Dec 2020`;
+const newYears = `1 Jan 2021`;
 
 function countdown() {
   const newYearsDate = new Date(newYears);
