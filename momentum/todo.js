@@ -3,16 +3,29 @@ const toDoForm = document.querySelector(".js-toDoForm"),
   toDoList = document.querySelector(".js-toDoList");
 
 const TODOS_LS = "toDos";
-const toDos = [];
+let toDos = [];
 
 function deleteTodo(event) {
   const btn = event.target;
   const li = btn.parentNode;
+
   toDoList.removeChild(li);
+  //   로컬 스토리지에 반영하기
+  // 조건이 true인 요소로 새로운 배열을 만듦
+
+  const cleanToDos = toDos.filter(function (toDo) {
+    //   li.id가 string이라 number로 변환해줘야함
+    return toDo.id !== parseInt(li.id);
+  });
+
+  //   바뀐 toDos를 반영해주기
+  toDos = cleanToDos;
+  //   로컬스토리지에 반영
+  saveTodos();
 }
 
-function saveTodo(todo) {
-  localStorage.setItem(TODOS_LS, JSON.stringify(todo));
+function saveTodos() {
+  localStorage.setItem(TODOS_LS, JSON.stringify(toDos));
 }
 
 function paintTodo(text) {
@@ -34,7 +47,7 @@ function paintTodo(text) {
   };
 
   toDos.push(toDoObj);
-  saveTodo(toDos);
+  saveTodos();
 }
 
 function handleSubmit(event) {
@@ -45,21 +58,19 @@ function handleSubmit(event) {
   paintTodo(currentValue);
 }
 
-function loadTodos() {
+function loadToDos() {
   const loadedToDos = localStorage.getItem(TODOS_LS);
-
   if (loadedToDos !== null) {
     //   string을 객체로 변환하기
     const parsedToDos = JSON.parse(loadedToDos);
-
-    const a = parsedToDos.forEach((toDo) => {
+    parsedToDos.forEach(function (toDo) {
       paintTodo(toDo.text);
     });
   }
 }
 
 function init() {
-  loadTodos();
+  loadToDos();
   toDoForm.addEventListener("submit", handleSubmit);
 }
 
