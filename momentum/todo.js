@@ -6,7 +6,6 @@ const TODOS_LS = "toDos";
 const toDos = [];
 
 function saveTodo(todo) {
-  // 자바스크립트 데이터를 로컬스토리지에 저장하도록  string으로 변환
   localStorage.setItem(TODOS_LS, JSON.stringify(todo));
 }
 
@@ -30,7 +29,6 @@ function paintTodo(text) {
   };
 
   toDos.push(toDoObj);
-  //   배열에 요소 추가한 뒤 호출하기
   saveTodo(toDos);
 }
 
@@ -46,6 +44,12 @@ function loadTodos() {
   const loadedToDos = localStorage.getItem(TODOS_LS);
 
   if (loadedToDos !== null) {
+    //   string을 객체로 변환하기
+    const parsedToDos = JSON.parse(loadedToDos);
+
+    const a = parsedToDos.forEach((toDo) => {
+      paintTodo(toDo.text);
+    });
   }
 }
 
