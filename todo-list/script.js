@@ -6,21 +6,6 @@ const toDoForm = document.querySelector("#js-toDoForm"),
 const PENDING = "pending";
 const FINISHED = "finished";
 
-function handleSubmit(e) {
-  e.preventDefault();
-  const pendingList = JSON.parse(localStorage.getItem(PENDING)) || [];
-
-  const toDo = {
-    id: pendingList.length + 1,
-    text: input.value,
-  };
-
-  input.value = "";
-
-  pendingList.push(toDo);
-  savePendingToStorage(pendingList);
-}
-
 function savePendingToStorage(toDos) {
   localStorage.setItem(PENDING, JSON.stringify(toDos));
   displayTaskToPendingList();
@@ -28,9 +13,10 @@ function savePendingToStorage(toDos) {
 
 function saveFinishedToStorage(toDos) {
   localStorage.setItem(FINISHED, JSON.stringify(toDos));
-  // displayTaskToPendingList();
+  displayTaskToFinishedList();
 }
 
+// TODO: displayTaskToFinishedList 과 합쳐서 중복 없애기
 function displayTaskToPendingList() {
   const pendingList = JSON.parse(localStorage.getItem(PENDING)) || [];
 
@@ -122,6 +108,7 @@ function checkPendingToDos(id) {
     return v.id !== parseInt(id);
   });
 
+  // TODO: 한개만 가져오기
   const newFinishedList = pendingList.filter(function (v) {
     return v.id === parseInt(id);
   });
@@ -129,10 +116,8 @@ function checkPendingToDos(id) {
   finishedList.push(newFinishedList[0]);
 
   savePendingToStorage(newPendingList);
-  displayTaskToPendingList();
 
   saveFinishedToStorage(finishedList);
-  displayTaskToFinishedList();
 }
 
 function deletePendingToDo(id) {
@@ -155,6 +140,21 @@ function deleteFinishedToDo(id) {
 
   saveFinishedToStorage(newFinishedList);
   displayTaskToFinishedList();
+}
+
+function handleSubmit(e) {
+  e.preventDefault();
+  const pendingList = JSON.parse(localStorage.getItem(PENDING)) || [];
+
+  const toDo = {
+    id: pendingList.length + 1,
+    text: input.value,
+  };
+
+  input.value = "";
+
+  pendingList.push(toDo);
+  savePendingToStorage(pendingList);
 }
 
 function init() {
