@@ -77,7 +77,7 @@ function displayTaskToFinishedList() {
 
     delBtn.innerText = "❌";
     delBtn.addEventListener("click", () => {
-      deletePendingToDo(v.id);
+      deleteFinishedToDo(v.id);
     });
 
     checkBtn.innerText = "✅";
@@ -97,7 +97,6 @@ function checkPendingToDos(id) {
   const pendingList = JSON.parse(localStorage.getItem(PENDING));
   const finishedList = JSON.parse(localStorage.getItem(FINISHED)) || [];
 
-  console.log("finishedList", finishedList);
   const newPendingList = pendingList.filter(function (v) {
     return v.id !== parseInt(id);
   });
@@ -128,6 +127,18 @@ function deletePendingToDo(id) {
   savePendingToStorage(newPendingList);
 
   displayTaskToPendingList();
+}
+
+function deleteFinishedToDo(id) {
+  const finishedList = JSON.parse(localStorage.getItem(FINISHED));
+
+  const newFinishedList = finishedList.filter(function (v) {
+    return v.id !== parseInt(id);
+  });
+
+  saveFinishedToStorage(newFinishedList);
+
+  displayTaskToFinishedList();
 }
 
 function init() {
