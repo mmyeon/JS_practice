@@ -4,20 +4,19 @@ pendingListDom = document.querySelector("#js-pendingList");
 
 const PENDING = "pending";
 
-const pendingToDos = [];
-
 function handleSubmit(e) {
   e.preventDefault();
+  const pendingList = JSON.parse(localStorage.getItem(PENDING)) || [];
 
   const toDo = {
-    id: pendingToDos.length + 1,
+    id: pendingList.length + 1,
     text: input.value,
   };
 
   input.value = "";
 
-  pendingToDos.push(toDo);
-  savePendingToStorage(pendingToDos);
+  pendingList.push(toDo);
+  savePendingToStorage(pendingList);
 }
 
 function savePendingToStorage(toDos) {
