@@ -80,9 +80,9 @@ function displayTaskToFinishedList() {
       deleteFinishedToDo(v.id);
     });
 
-    checkBtn.innerText = "✅";
+    checkBtn.innerText = "⏪ ";
     checkBtn.addEventListener("click", () => {
-      checkPendingToDos(v.id);
+      revertFinishedToDos(v.id);
     });
 
     finishedListDOM.appendChild(li);
@@ -91,6 +91,27 @@ function displayTaskToFinishedList() {
     li.appendChild(checkBtn);
     li.id = v.id;
   });
+}
+
+function revertFinishedToDos(id) {
+  const finishedList = JSON.parse(localStorage.getItem(FINISHED));
+  const pendingList = JSON.parse(localStorage.getItem(PENDING));
+
+  const newFinishedList = finishedList.filter(function (v) {
+    return v.id !== parseInt(id);
+  });
+
+  const revertedToDos = finishedList.filter(function (v) {
+    return v.id === parseInt(id);
+  });
+
+  console.log("revertedToDos", revertedToDos);
+
+  saveFinishedToStorage(newFinishedList);
+  displayTaskToFinishedList();
+
+  pendingList.push(revertedToDos[0]);
+  savePendingToStorage(pendingList);
 }
 
 function checkPendingToDos(id) {
