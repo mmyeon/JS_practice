@@ -105,15 +105,12 @@ function checkPendingToDos(id) {
     return v.id === parseInt(id);
   });
 
-  if (finishedList !== null) {
-    finishedList.push(newFinishedList[0]);
-  }
+  finishedList.push(newFinishedList[0]);
 
   savePendingToStorage(newPendingList);
   displayTaskToPendingList();
 
   saveFinishedToStorage(finishedList);
-
   displayTaskToFinishedList();
 }
 
@@ -125,7 +122,6 @@ function deletePendingToDo(id) {
   });
 
   savePendingToStorage(newPendingList);
-
   displayTaskToPendingList();
 }
 
@@ -137,7 +133,6 @@ function deleteFinishedToDo(id) {
   });
 
   saveFinishedToStorage(newFinishedList);
-
   displayTaskToFinishedList();
 }
 
