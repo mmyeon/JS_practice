@@ -17,10 +17,10 @@ function handleSubmit(e) {
   input.value = "";
 
   pendingToDos.push(toDo);
-  saveToStorage(pendingToDos);
+  savePendingToStorage(pendingToDos);
 }
 
-function saveToStorage(toDos) {
+function savePendingToStorage(toDos) {
   localStorage.setItem(PENDING, JSON.stringify(toDos));
   displayTaskToPendingList();
 }
@@ -37,11 +37,32 @@ function displayTaskToPendingList() {
   pendingList.forEach((v) => {
     const li = document.createElement("li");
     const span = document.createElement("span");
+    const delBtn = document.createElement("button");
+
     span.innerText = v.text;
+
+    delBtn.innerText = "❌";
+    delBtn.addEventListener("click", () => {
+      deletePendingToDo(v.id);
+    });
+
     pendingListDom.appendChild(li);
     li.appendChild(span);
+    li.appendChild(delBtn);
     li.id = v.id;
   });
+}
+
+function deletePendingToDo(id) {
+  const pendingList = JSON.parse(localStorage.getItem(PENDING));
+
+  const newPendingList = pendingList.filter(function (v) {
+    return v.id !== parseInt(id);
+  });
+
+  savePendingToStorage(newPendingList);
+
+  displayTaskToPendingList();
 }
 
 init();
