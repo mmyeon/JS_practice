@@ -24,10 +24,6 @@ function savePendingToStorage(toDos) {
   displayTaskToPendingList();
 }
 
-function init() {
-  toDoForm.addEventListener("submit", handleSubmit);
-}
-
 function displayTaskToPendingList() {
   const pendingList = JSON.parse(localStorage.getItem(PENDING));
 
@@ -62,6 +58,11 @@ function deletePendingToDo(id) {
   savePendingToStorage(newPendingList);
 
   displayTaskToPendingList();
+}
+
+function init() {
+  displayTaskToPendingList();
+  toDoForm.addEventListener("submit", handleSubmit);
 }
 
 init();
