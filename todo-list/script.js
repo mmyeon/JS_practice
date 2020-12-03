@@ -106,8 +106,6 @@ function checkPendingToDos(id) {
     return v.id === parseInt(id);
   });
 
-  console.log("newFinishedList", newFinishedList);
-
   if (finishedList !== null) {
     finishedList.push(newFinishedList[0]);
   }
@@ -134,6 +132,7 @@ function deletePendingToDo(id) {
 
 function init() {
   displayTaskToPendingList();
+  displayTaskToFinishedList();
   toDoForm.addEventListener("submit", handleSubmit);
 }
 
