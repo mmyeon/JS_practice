@@ -3,22 +3,35 @@ const toDoForm = document.querySelector(".js-toDoForm"),
   pendingList = document.querySelector(".js-pendingList"),
   finishedList = document.querySelector(".js-finishedList");
 
-const pendingToDos = [];
-const PENDING_LS = "PENDING";
-const FINISHED_LS = "FINISHED";
-const newId = pendingToDos.length + 1;
+let pendingToDos = [];
+const PENDING_STORAGE = "PENDING";
+const FINISHED_STORAGE = "FINISHED";
 
-// TODO:btn 삭제 구현
+let newId;
+
 function deleteToDo(e) {
+  // TODO: 로컬스토리지 삭제
+  // TODO: 뿌린다(paint)
   const btn = e.target;
-  console.log();
+  const li = btn.parentNode;
+
+  if (li.parentNode === pendingList) {
+    pendingList.removeChild(li);
+    pendingToDos = pendingToDos.filter(function (toDo) {
+      return toDo.id !== parseInt(li.id);
+    });
+  }
+
+  saveToDos(pendingToDos);
 }
 
 function saveToDos(text) {
-  localStorage.setItem(PENDING_LS, JSON.stringify(text));
+  localStorage.setItem(PENDING_STORAGE, JSON.stringify(text));
 }
 
-function addToLS(text) {
+function addToStorage(text) {
+  newId = pendingToDos.length + 1;
+
   const toDo = {
     id: newId,
     text: text,
@@ -33,17 +46,16 @@ function paintToDos(text) {
   const span = document.createElement("span");
   const delBtn = document.createElement("button");
   const checkBtn = document.createElement("button");
-  li.id = newId;
   span.innerText = text;
   delBtn.innerText = "❌";
   delBtn.addEventListener("click", deleteToDo);
   checkBtn.innerText = "⭕";
   pendingList.appendChild(li);
-
   li.appendChild(span);
   li.appendChild(delBtn);
   li.appendChild(checkBtn);
-  addToLS(text);
+  addToStorage(text);
+  li.id = newId;
 }
 
 function handleSubmit(e) {
@@ -54,10 +66,10 @@ function handleSubmit(e) {
 }
 
 function loadToDos() {
-  const pendingToDos = localStorage.getItem(PENDING_LS);
-  const finishedToDos = localStorage.getItem(FINISHED_LS);
-  const parsedPendingToDos = JSON.parse(pendingToDos);
-  const parsedFinishedToDos = JSON.parse(finishedToDos);
+  const loadedPendingToDos = localStorage.getItem(PENDING_STORAGE);
+  const loadedFinishedToDos = localStorage.getItem(FINISHED_STORAGE);
+  const parsedPendingToDos = JSON.parse(loadedPendingToDos);
+  // const parsedFinishedToDos = JSON.parse(loadedFinishedToDos);
 
   if (pendingToDos !== null) {
     parsedPendingToDos.map((item) => paintToDos(item.text));
