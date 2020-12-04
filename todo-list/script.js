@@ -3,8 +3,8 @@ const toDoForm = document.querySelector("#js-toDoForm"),
   pendingListDOM = document.querySelector("#js-pendingList"),
   finishedListDOM = document.querySelector("#js-finishedList");
 
-const PENDING = "pending";
-const FINISHED = "finished";
+const PENDING = "PENDING";
+const FINISHED = "FINISHED";
 
 function savePendingToStorage(toDos) {
   localStorage.setItem(PENDING, JSON.stringify(toDos));
@@ -22,7 +22,6 @@ function saveFinishedToStorage(toDos) {
  */
 function displayTaskToList(type) {
   const storageKey = type === PENDING ? PENDING : FINISHED;
-  console.log("storageKey", storageKey);
   const todoList = JSON.parse(localStorage.getItem(storageKey)) || [];
 
   const todoListDOM = type === PENDING ? pendingListDOM : finishedListDOM;
@@ -44,7 +43,7 @@ function displayTaskToList(type) {
 
     additinalBtn.innerText = type === PENDING ? "✅" : "⏪ ";
     additinalBtn.addEventListener("click", () => {
-      type === PENDING ? checkPendingToDos(v.id) : revertFinishedToDos(v.id);
+      type === PENDING ? completePendingToDos(v.id) : revertFinishedToDos(v.id);
     });
 
     todoListDOM.appendChild(li);
@@ -73,7 +72,7 @@ function revertFinishedToDos(id) {
   savePendingToStorage(pendingList);
 }
 
-function checkPendingToDos(id) {
+function completePendingToDos(id) {
   const pendingList = JSON.parse(localStorage.getItem(PENDING));
   const finishedList = JSON.parse(localStorage.getItem(FINISHED)) || [];
 
@@ -86,7 +85,6 @@ function checkPendingToDos(id) {
   });
 
   finishedList.push(newFinishedList);
-  console.log(finishedList);
 
   savePendingToStorage(newPendingList);
 
