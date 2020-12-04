@@ -63,15 +63,13 @@ function revertFinishedToDos(id) {
     return v.id !== parseInt(id);
   });
 
-  const revertedToDos = finishedList.filter(function (v) {
+  const revertedToDos = finishedList.find(function (v) {
     return v.id === parseInt(id);
   });
 
-  console.log("revertedToDos", revertedToDos);
-
   saveFinishedToStorage(newFinishedList);
 
-  pendingList.push(revertedToDos[0]);
+  pendingList.push(revertedToDos);
   savePendingToStorage(pendingList);
 }
 
@@ -83,12 +81,12 @@ function checkPendingToDos(id) {
     return v.id !== parseInt(id);
   });
 
-  // TODO: 한개만 가져오기
-  const newFinishedList = pendingList.filter(function (v) {
+  const newFinishedList = pendingList.find(function (v) {
     return v.id === parseInt(id);
   });
 
-  finishedList.push(newFinishedList[0]);
+  finishedList.push(newFinishedList);
+  console.log(finishedList);
 
   savePendingToStorage(newPendingList);
 
