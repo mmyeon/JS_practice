@@ -116,7 +116,7 @@ function handleSubmit(e) {
   const pendingList = JSON.parse(localStorage.getItem(PENDING)) || [];
 
   const toDo = {
-    id: pendingList.length + 1,
+    id: Date.now(),
     text: input.value,
   };
 
