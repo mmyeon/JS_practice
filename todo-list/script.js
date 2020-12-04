@@ -8,73 +8,49 @@ const FINISHED = "finished";
 
 function savePendingToStorage(toDos) {
   localStorage.setItem(PENDING, JSON.stringify(toDos));
-  displayTaskToPendingList();
+  displayTaskToList(PENDING);
 }
 
 function saveFinishedToStorage(toDos) {
   localStorage.setItem(FINISHED, JSON.stringify(toDos));
-  displayTaskToFinishedList();
+  displayTaskToList(FINISHED);
 }
 
-// TODO: displayTaskToFinishedList 과 합쳐서 중복 없애기
-function displayTaskToPendingList() {
-  const pendingList = JSON.parse(localStorage.getItem(PENDING)) || [];
+/**
+ * Local Storage의 데이터를 리스트로 표시한다
+ * @param {string} type PENDING, FINISHED
+ */
+function displayTaskToList(type) {
+  const storageKey = type === PENDING ? PENDING : FINISHED;
+  console.log("storageKey", storageKey);
+  const todoList = JSON.parse(localStorage.getItem(storageKey)) || [];
 
-  pendingListDOM.innerHTML = "";
+  const todoListDOM = type === PENDING ? pendingListDOM : finishedListDOM;
 
-  pendingList.forEach((v) => {
+  todoListDOM.innerHTML = "";
+
+  todoList.forEach((v) => {
     const li = document.createElement("li");
     const span = document.createElement("span");
     const delBtn = document.createElement("button");
-    const checkBtn = document.createElement("button");
+    const additinalBtn = document.createElement("button");
 
     span.innerText = v.text;
 
     delBtn.innerText = "❌";
     delBtn.addEventListener("click", () => {
-      deletePendingToDo(v.id);
+      type === PENDING ? deletePendingToDo(v.id) : deleteFinishedToDo(v.id);
     });
 
-    checkBtn.innerText = "✅";
-    checkBtn.addEventListener("click", () => {
-      checkPendingToDos(v.id);
+    additinalBtn.innerText = type === PENDING ? "✅" : "⏪ ";
+    additinalBtn.addEventListener("click", () => {
+      type === PENDING ? checkPendingToDos(v.id) : revertFinishedToDos(v.id);
     });
 
-    pendingListDOM.appendChild(li);
+    todoListDOM.appendChild(li);
     li.appendChild(span);
     li.appendChild(delBtn);
-    li.appendChild(checkBtn);
-    li.id = v.id;
-  });
-}
-
-function displayTaskToFinishedList() {
-  const finishedList = JSON.parse(localStorage.getItem(FINISHED)) || [];
-
-  finishedListDOM.innerHTML = "";
-
-  finishedList.forEach((v) => {
-    const li = document.createElement("li");
-    const span = document.createElement("span");
-    const delBtn = document.createElement("button");
-    const checkBtn = document.createElement("button");
-
-    span.innerText = v.text;
-
-    delBtn.innerText = "❌";
-    delBtn.addEventListener("click", () => {
-      deleteFinishedToDo(v.id);
-    });
-
-    checkBtn.innerText = "⏪ ";
-    checkBtn.addEventListener("click", () => {
-      revertFinishedToDos(v.id);
-    });
-
-    finishedListDOM.appendChild(li);
-    li.appendChild(span);
-    li.appendChild(delBtn);
-    li.appendChild(checkBtn);
+    li.appendChild(additinalBtn);
     li.id = v.id;
   });
 }
@@ -94,7 +70,6 @@ function revertFinishedToDos(id) {
   console.log("revertedToDos", revertedToDos);
 
   saveFinishedToStorage(newFinishedList);
-  displayTaskToFinishedList();
 
   pendingList.push(revertedToDos[0]);
   savePendingToStorage(pendingList);
@@ -128,7 +103,6 @@ function deletePendingToDo(id) {
   });
 
   savePendingToStorage(newPendingList);
-  displayTaskToPendingList();
 }
 
 function deleteFinishedToDo(id) {
@@ -139,7 +113,6 @@ function deleteFinishedToDo(id) {
   });
 
   saveFinishedToStorage(newFinishedList);
-  displayTaskToFinishedList();
 }
 
 function handleSubmit(e) {
@@ -158,8 +131,8 @@ function handleSubmit(e) {
 }
 
 function init() {
-  displayTaskToPendingList();
-  displayTaskToFinishedList();
+  displayTaskToList(PENDING);
+  displayTaskToList(FINISHED);
   toDoForm.addEventListener("submit", handleSubmit);
 }
 
