@@ -66,9 +66,8 @@ function revertFinishedToDos(id) {
     return v.id === parseInt(id);
   });
 
-  saveFinishedToStorage(newFinishedList);
-
   pendingList.push(revertedToDos);
+  saveFinishedToStorage(newFinishedList);
   savePendingToStorage(pendingList);
 }
 
@@ -87,7 +86,6 @@ function completePendingToDos(id) {
   finishedList.push(newFinishedList);
 
   savePendingToStorage(newPendingList);
-
   saveFinishedToStorage(finishedList);
 }
 
